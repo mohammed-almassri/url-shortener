@@ -12,13 +12,18 @@ class SUrlController extends Controller
     {
         $surl = SUrl::where('short_code', $shortCode)->firstOrFail();
 
-        $q       = Location::get(request()->ip());
+        $ip = request()->ip();
+        if (app()->environment('production')) {
+            $ip = request()->header('x-forwarded-for') ?? $ip;
+        }
+
+        $q       = Location::get($ip);
         $country = $q->countryName ?? null;
         $region  = $q->regionName ?? null;
 
         Redis::connection('clicks')->rpush('click_logs', json_encode([
             's_url_id'   => $surl->id,
-            'ip_address' => request()->ip(),
+            'ip_address' => $ip,
             'user_agent' => request()->userAgent(),
             'referrer'   => request()->headers->get('referer'),
             'country'    => $country,
