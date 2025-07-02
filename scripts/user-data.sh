@@ -57,6 +57,7 @@ sudo rm app.zip
 
 # === FILE PERMISSIONS ===
 echo "Setting file permissions..."
+sudo mkdir -p "$APP_DIR/storage/logs"
 sudo chown -R www-data:www-data "$APP_DIR"
 sudo chmod -R 755 "$APP_DIR"
 
@@ -68,6 +69,12 @@ sudo chmod 700 "$APP_DIR/.env"
 echo "DB_PASSWORD=${DB_PASSWORD}" | sudo tee -a "$APP_DIR/.env" > /dev/null
 
 # === LOAD ENV AND REBUILD CONFIG ===
+
+echo "Creating storage/logs directory..."
+sudo mkdir -p "$APP_DIR/storage/logs"
+sudo chown -R www-data:www-data "$APP_DIR/storage"
+sudo chmod -R 755 "$APP_DIR/storage"
+
 echo "Clearing and caching Laravel config, routes, and views..."
 sudo php artisan config:clear > /dev/null
 sudo php artisan config:cache > /dev/null
