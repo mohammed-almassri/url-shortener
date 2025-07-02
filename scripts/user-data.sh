@@ -92,4 +92,8 @@ sudo rm -f /etc/nginx/sites-enabled/default
 sudo nginx -t
 sudo systemctl reload nginx
 
+# === Set up Laravel scheduler cron job ===
+CRON_LINE="* * * * * www-data cd $APP_DIR && php artisan schedule:run >> /dev/null 2>&1"
+grep -F "$CRON_LINE" /etc/crontab || echo "$CRON_LINE" >> /etc/crontab
+
 echo "User-data script completed."
