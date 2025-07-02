@@ -14,7 +14,7 @@ class SUrlController extends Controller
 
         $ip = request()->ip();
         if (app()->environment('production')) {
-            $ip = request()->header('x-forwarded-for') ?? $ip;
+            $ip = request()->header('X-Forwarded-For') ?? $ip;
         }
 
         $q       = Location::get($ip);
