@@ -33,5 +33,9 @@ Route::get('/api/surls', SUrlController::class . '@index')
 Route::post('/api/surls', SUrlController::class . '@store')
     ->name('surl.store');
 
+Route::get('/health', function () {
+    return response()->json(['status' => 'ok']);
+})->name('health.check');
+
 Route::get('/{shortCode}', action: \App\Http\Controllers\Web\SUrlController::class . '@show')
     ->name('surl.redirect');
