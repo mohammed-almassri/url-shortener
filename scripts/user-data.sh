@@ -13,7 +13,7 @@ echo "Updating package lists and installing dependencies..."
 sudo apt update -y -qq
 sudo apt install -y -qq \
     unzip nginx \
-    jq curl gnupg software-properties-common
+    jq curl gnupg software-properties-common stunnel4
 
 curl -sSL "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 unzip -q awscliv2.zip
@@ -23,7 +23,7 @@ sudo ./aws/install > /dev/null
 echo "Adding PHP 8.4 repository and installing PHP 8.4..."
 sudo add-apt-repository ppa:ondrej/php -y > /dev/null
 sudo apt update -y -qq
-sudo apt install -y -qq php8.4 php8.4-cli php8.4-fpm php8.4-mbstring php8.4-xml php8.4-curl php8.4-bcmath php8.4-pgsql php8.4-zip
+sudo apt install -y -qq php8.4 php8.4-cli php8.4-fpm php8.4-mbstring php8.4-redis php8.4-xml php8.4-curl php8.4-bcmath php8.4-pgsql php8.4-zip
 
 # Update alternatives to use PHP 8.4 by default
 sudo update-alternatives --set php /usr/bin/php8.4 > /dev/null
