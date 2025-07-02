@@ -5,7 +5,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class SUrl extends Model
 {
-    protected $fillable = ['original_url', 'short_code'];
+    protected $fillable = ['original_url', 'short_code', 'user_id'];
 
     /**
      * Generate a unique short code for the URL.
@@ -27,5 +27,10 @@ class SUrl extends Model
         static::creating(function ($model) {
             $model->short_code = self::generateShortCode();
         });
+    }
+
+    public function clicks()
+    {
+        return $this->hasMany(Click::class);
     }
 }

@@ -1,17 +1,25 @@
-import { Head, Link } from '@inertiajs/react';
+import { SharedData } from '@/types';
+import { Head, Link, usePage } from '@inertiajs/react';
 import { useState } from 'react';
 
 export default function Welcome() {
-    const [sUrl, setSUrl] = useState('');
+    const [sUrl, setSUrl] = useState('https://google.com');
     const [result, setResult] = useState('');
     const [error, setError] = useState('');
+    const { auth } = usePage<SharedData>().props;
+
     async function createSUrl() {
+        const csrf = (document.querySelector('meta[name="csrf-token"]') as HTMLMetaElement)?.content;
         const res = await fetch('/api/surls', {
+            credentials: 'include',
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': csrf ?? '',
             },
-            body: JSON.stringify({ original_url: sUrl }),
+            body: JSON.stringify({
+                original_url: sUrl,
+            }),
         });
 
         if (res.ok) {
@@ -48,12 +56,20 @@ export default function Welcome() {
             <Head title="Home" />
 
             <nav className="flex justify-end bg-white p-4 shadow">
-                <Link href={route('login')} className="mr-4 rounded px-4 py-2 text-blue-600 transition hover:bg-blue-100">
-                    Login
-                </Link>
-                <Link href={route('register')} className="rounded bg-blue-600 px-4 py-2 text-white transition hover:bg-blue-700">
-                    Register
-                </Link>
+                {auth.user ? (
+                    <Link href={route('dashboard')} className="rounded bg-blue-600 px-4 py-2 text-white transition hover:bg-blue-700">
+                        Dashboard
+                    </Link>
+                ) : (
+                    <>
+                        <Link href={route('login')} className="mr-4 rounded px-4 py-2 text-blue-600 transition hover:bg-blue-100">
+                            Login
+                        </Link>
+                        <Link href={route('register')} className="rounded bg-blue-600 px-4 py-2 text-white transition hover:bg-blue-700">
+                            Register
+                        </Link>
+                    </>
+                )}
             </nav>
 
             <div className="flex min-h-screen flex-col items-center justify-center bg-gray-100">

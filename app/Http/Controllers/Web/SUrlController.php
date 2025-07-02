@@ -12,7 +12,7 @@ class SUrlController extends Controller
     {
         $surl = SUrl::where('short_code', $shortCode)->firstOrFail();
 
-        $q       = Location::get('205.221.160.10');
+        $q       = Location::get(request()->ip());
         $country = $q->countryCode ?? null;
         $region  = $q->regionCode ?? null;
 

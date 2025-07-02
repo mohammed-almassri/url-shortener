@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('original_url');
             $table->string('short_code')->unique();
+            $table->uuid('user_id')->nullable()->index();
             $table->timestamps();
         });
     }

@@ -16,6 +16,9 @@ class SUrlResource extends JsonResource
         return [
             'original_url' => $this->original_url,
             'short_code'   => $this->short_code,
+            'click_count'  => $this->clicks_count,
+            'short_url'    => url($this->short_code),
+            'created_at'   => $this->created_at->toDateTimeString(),
         ];
     }
 }
