@@ -18,7 +18,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
@@ -43,22 +43,19 @@ jobs:
         run: |
           zip -r $ZIP_NAME . -x "*.git*" "tests/*" "node_modules/*" "storage/logs/*"
 
-      - name: Upload ZIP to S3
-        uses: aws-actions/s3 cp@v1
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
-          source: ${{ env.ZIP_PATH }}
-          destination: s3://${{ env.S3_BUCKET }}/${{ env.ZIP_NAME }}
+
+      - name: Upload ZIP to S3
+        run: |
+          aws s3 cp ${{ env.ZIP_NAME }} s3://${{ env.S3_BUCKET }}/${{ env.ZIP_NAME }}
 
       - name: Trigger ASG Instance Refresh
-        uses: aws-actions/aws-cli-action@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ env.AWS_REGION }}
-          inline: |
-            aws autoscaling start-instance-refresh \
-              --auto-scaling-group-name "${{ env.ASG_NAME }}" \
-              --strategy Rolling
+        run: |
+          aws autoscaling start-instance-refresh \
+            --auto-scaling-group-name "${{ env.ASG_NAME }}" \
+            --strategy Rolling
