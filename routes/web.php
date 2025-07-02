@@ -34,4 +34,4 @@ Route::post('/api/surls', SUrlController::class . '@store')
     ->name('surl.store');
 
 Route::get('/{shortCode}', action: \App\Http\Controllers\Web\SUrlController::class . '@show')
-    ->name('surl.show');
+    ->name('surl.redirect');
