@@ -8,6 +8,18 @@ services:
     restart: unless-stopped
     volumes:
       - redisdata:/data
+  postgres:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    ports:
+      - '5460:5432'
+    environment:
+      POSTGRES_DB: laravel
+      POSTGRES_USER: laravel
+      POSTGRES_PASSWORD: secret
+    volumes:
+      - pgdata:/var/lib/postgresql/data
 
 volumes:
   redisdata:
+  pgdata:
