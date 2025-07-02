@@ -12,13 +12,14 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 export default function ShowSUrl({ id }: { id: string }) {
-    const [surl, setSurl] = useState<SUrl | null>(null);
+    const [surl] = useState<SUrl | null>(null);
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Dashboard" />
             <div className="container mx-auto p-4">
                 <h1 className="mb-4 text-2xl font-bold">Short URL Details</h1>
+                {id}
                 {surl ? (
                     <div className="rounded-lg bg-white p-6 shadow-md">
                         <p>

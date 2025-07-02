@@ -30,6 +30,7 @@ export default function CountryMap({ countryStats }: CountryMapProps) {
         >
             <ZoomableGroup center={[0, 0]} zoom={1}>
                 <Geographies geography={geoUrl}>
+                    {/* eslint-disable-next-line */}
                     {({ geographies }: { geographies: any[] }) =>
                         geographies.map((geo) => {
                             const code = geo.properties.name;
