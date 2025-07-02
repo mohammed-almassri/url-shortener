@@ -1,0 +1,64 @@
+name: deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: Build & Deploy to EC2
+    runs-on: ubuntu-latest
+
+    env:
+      ZIP_NAME: deploy-${{ github.run_id }}-${{ github.sha }}.zip
+      AWS_REGION: 'us-east-1'
+      S3_BUCKET: 'massri-url-shortener-deployment'
+      ASG_NAME: 'url-shortener-asg'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: mbstring, bcmath, curl, pdo, tokenizer
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install backend dependencies
+        run: composer install --no-dev --optimize-autoloader
+
+      - name: Install frontend dependencies
+        run: |
+          npm ci --force
+          npm run build
+
+      - name: Package application
+        run: |
+          zip -r $ZIP_NAME . -x "*.git*" "tests/*" "node_modules/*" "storage/logs/*"
+
+      - name: Upload ZIP to S3
+        uses: aws-actions/s3 cp@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+          source: ${{ env.ZIP_PATH }}
+          destination: s3://${{ env.S3_BUCKET }}/${{ env.ZIP_NAME }}
+
+      - name: Trigger ASG Instance Refresh
+        uses: aws-actions/aws-cli-action@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+          inline: |
+            aws autoscaling start-instance-refresh \
+              --auto-scaling-group-name "${{ env.ASG_NAME }}" \
+              --strategy Rolling
