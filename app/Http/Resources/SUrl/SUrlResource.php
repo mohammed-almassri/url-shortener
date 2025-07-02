@@ -14,6 +14,7 @@ class SUrlResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'id'           => $this->id,
             'original_url' => $this->original_url,
             'short_code'   => $this->short_code,
             'click_count'  => $this->clicks_count,

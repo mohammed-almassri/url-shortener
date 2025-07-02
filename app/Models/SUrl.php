@@ -33,4 +33,13 @@ class SUrl extends Model
     {
         return $this->hasMany(Click::class);
     }
+
+    public function countryReport()
+    {
+        $clicks = $this->clicks()->
+            groupBy('country')
+            ->selectRaw('country,count(*) as count')
+            ->get();
+        return $clicks;
+    }
 }

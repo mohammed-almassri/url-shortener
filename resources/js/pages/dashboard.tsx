@@ -1,7 +1,8 @@
 import CountryMap from '@/components/charts/map';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
-import { Head } from '@inertiajs/react';
+import { SUrl } from '@/types/types';
+import { Head, Link } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -11,16 +12,8 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-type Url = {
-    id: string;
-    original_url: string;
-    short_url: string;
-    created_at: string;
-    click_count: number;
-};
-
 function UrlsTable() {
-    const [urls, setUrls] = useState<Url[]>([]);
+    const [urls, setUrls] = useState<SUrl[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -49,7 +42,11 @@ function UrlsTable() {
             <tbody>
                 {urls.map((url) => (
                     <tr key={url.id}>
-                        <td className="px-4 py-2">{url.id}</td>
+                        <td className="px-4 py-2">
+                            <Link href={`/urls/${url.id}`} className="text-blue-600 hover:underline">
+                                View Details
+                            </Link>
+                        </td>
                         <td className="px-4 py-2">{url.original_url}</td>
                         <td className="px-4 py-2">{url.short_url}</td>
                         <td className="px-4 py-2">{url.click_count}</td>

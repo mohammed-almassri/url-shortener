@@ -13,8 +13,8 @@ class SUrlController extends Controller
         $surl = SUrl::where('short_code', $shortCode)->firstOrFail();
 
         $q       = Location::get(request()->ip());
-        $country = $q->countryCode ?? null;
-        $region  = $q->regionCode ?? null;
+        $country = $q->countryName ?? null;
+        $region  = $q->regionName ?? null;
 
         Redis::connection('clicks')->rpush('click_logs', json_encode([
             's_url_id'   => $surl->id,
