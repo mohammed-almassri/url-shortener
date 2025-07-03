@@ -6,3 +6,10 @@ Schedule::call(function () {
     ->name('sync.clicks')
     ->onOneServer()
     ->withoutOverlapping();
+
+Schedule::call(function () {
+    Artisan::call('app:handle-top-urls-cache');
+})->everyMinute()
+    ->name('top-urls-cache')
+    ->onOneServer()
+    ->withoutOverlapping();
