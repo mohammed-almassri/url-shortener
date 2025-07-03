@@ -16,7 +16,7 @@ class ReportsController extends Controller
 
         $data = $surl->countryReport();
         $data = $data->map(function ($item) {
-            $item->code = Helpers::mapCountryToId($item->country);
+            $item->code = $item->country ? Helpers::mapCountryToId($item->country) : null;
             return $item;
         });
 
