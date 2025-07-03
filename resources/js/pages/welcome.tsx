@@ -51,7 +51,10 @@ export default function Welcome() {
             <Head title="Home" />
             {/* Navigation */}
             <nav className="flex items-center justify-between bg-white px-6 py-4 shadow-sm">
-                <div className="text-xl font-bold text-blue-600">🔗 HAL8</div>
+                <div className="text-xl font-bold text-blue-600">
+                    <img src="/logo-outline-dark.png" alt="HAL8 Logo" className="mr-2 inline-block h-10" />
+                    HAL8
+                </div>
                 <div className="space-x-4">
                     <Link href="#" className="text-gray-600 hover:text-blue-600">
                         Features
