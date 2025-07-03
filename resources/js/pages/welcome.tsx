@@ -3,7 +3,7 @@ import { Head, Link, usePage } from '@inertiajs/react';
 import { useState } from 'react';
 
 export default function Welcome() {
-    const [sUrl, setSUrl] = useState('https://google.com');
+    const [sUrl, setSUrl] = useState('');
     const [result, setResult] = useState('');
     const [error, setError] = useState('');
     const { auth } = usePage<SharedData>().props;
@@ -15,6 +15,7 @@ export default function Welcome() {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                Accept: 'application/json',
                 'X-CSRF-TOKEN': csrf ?? '',
             },
             body: JSON.stringify({
@@ -83,7 +84,7 @@ export default function Welcome() {
                         className="flex flex-col gap-4"
                     >
                         <input
-                            type="url"
+                            type="text"
                             placeholder="Paste your long URL here..."
                             value={sUrl}
                             onChange={(e) => setSUrl(e.target.value)}

@@ -29,6 +29,11 @@ class SUrlController extends Controller
                 $data['user_id'] = $cookie;
             }
         }
+
+        if (! preg_match('/^https?:\/\//i', $data['original_url'])) {
+            $data['original_url'] = 'http://' . $data['original_url'];
+        }
+
         $sUrl = SUrl::create($data);
         return new SUrlResource($sUrl);
     }

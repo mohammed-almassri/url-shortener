@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Requests\SUrl;
 
+use App\Rules\UrlRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CreateSUrl extends FormRequest
@@ -21,7 +22,7 @@ class CreateSUrl extends FormRequest
     public function rules(): array
     {
         return [
-            'original_url' => 'required|url',
+            'original_url' => ['required', new UrlRule],
         ];
     }
 }
