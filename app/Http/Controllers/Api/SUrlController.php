@@ -32,4 +32,9 @@ class SUrlController extends Controller
         $sUrl = SUrl::create($data);
         return new SUrlResource($sUrl);
     }
+
+    public function show(SUrl $surl)
+    {
+        return new SUrlResource($surl->loadCount('clicks'));
+    }
 }

@@ -5,3 +5,9 @@ export type SUrl = {
     created_at: string;
     click_count: number;
 };
+
+export type CountryStat = {
+    country: string;
+    code: string | null;
+    count: number;
+};

@@ -1,4 +1,3 @@
-import CountryMap from '@/components/charts/map';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { SUrl } from '@/types/types';
@@ -67,14 +66,6 @@ export default function Dashboard() {
                 <div className="grid auto-rows-min gap-4 md:grid-cols-3">
                     <UrlsTable />
                 </div>
-
-                <CountryMap
-                    countryStats={[
-                        { country_code: 'Japan', count: 123 },
-                        { country_code: 'DE', count: 52 },
-                        { country_code: 'IN', count: 45 },
-                    ]}
-                />
             </div>
         </AppLayout>
     );
