@@ -30,16 +30,16 @@ require __DIR__ . '/auth.php';
 
 Route::get('/api/surls', SUrlController::class . '@index')
     ->middleware('auth')
-    ->name('surl.index');
+    ->name('api.surl.index');
 Route::get('/api/surls/{surl}', SUrlController::class . '@show')
     ->middleware('auth')
-    ->name('surl.show');
+    ->name('api.surl.show');
 Route::post('/api/surls', SUrlController::class . '@store')
-    ->name('surl.store');
+    ->name('api.surl.store');
 
 Route::get('/api/reports/{surl}', ReportsController::class . '@countryReport')
     ->middleware('auth')
-    ->name('surl.reports.country');
+    ->name('api.surl.reports.country');
 
 Route::get('/health', function () {
     return response()->json(['status' => 'ok']);
